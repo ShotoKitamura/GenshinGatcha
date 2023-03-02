@@ -1,12 +1,36 @@
 ﻿import streamlit as st
 import random
 
+def hundredsixtygacha():
+	st.text("レア度★★★★★の神里綾華を引きました！")
+	st.session_state.count = 0
+
+def eightygacha():
+	m = random.randint(1, 2)
+	if m == 1:
+		st.text("レア度★★★★★の神里綾華を引きました！")
+		st.session_state.count = 0
+	else:
+		p = random.randint(1, 5)
+		if p == 1:
+			st.text("レア度★★★★★のジンを引きました！")
+		elif p == 2:
+			st.text("レア度★★★★★の刻晴(こくせい)を引きました！")
+		elif p == 3:
+			st.text("レア度★★★★★のティナリを引きました！")
+		elif p == 4:
+			st.text("レア度★★★★★の七七(なな)を引きました！")
+		else:
+			st.text("レア度★★★★★のモナを引きました！")
+
+
 def tengacha():
 	n = random.randint(1, 1000)
 	if n <= 6:
 		m = random.randint(1, 2)
 		if m == 1:
 			st.text("レア度★★★★★の神里綾華を引きました！")
+			st.session_state.count = 0
 		else:
 			p = random.randint(1, 5)
 			if p == 1:
@@ -38,6 +62,7 @@ def gacha():
 		m = random.randint(1, 2)
 		if m == 1:
 			st.text("レア度★★★★★の神里綾華を引きました！")
+			st.session_state.count = 0
 		else:
 			p = random.randint(1, 5)
 			if p == 1:
@@ -65,6 +90,9 @@ def gacha():
 	else:
 		st.text("レア度★★★の武器を引きました")
 
+if 'count' not in st.session_state: 
+	st.session_state.count = 0
+
 st.title("原神ガチャシミュレーター")
 st.caption("原神の神里綾華ガチャを引くアプリです。")
 
@@ -78,8 +106,15 @@ with st.form(key="profile_form"):
 		gacha()
 
 	if tengacha_btn == True:
+		st.session_state.count += 10
+		st.text(str(st.session_state.count)+"連ガチャを引きました")
 		for i in range(10):
 			if i != 9:
 				gacha()
 			else:
-				tengacha()
+				if st.session_state.count == 80:
+					eightygacha()
+				elif st.session_state.count == 160:
+					hundredsixtygacha()
+				else:
+					tengacha()
